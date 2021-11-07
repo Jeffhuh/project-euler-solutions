@@ -10,31 +10,46 @@ namespace Problems
         {
             int mL = ((int)Math.Floor(Math.Log2(1_000_000)) + 1) / 2;
             int it = (int)Math.Pow(2,mL);
-            long sum = 0;
-            for (int i = 1; i < it; i += 2)
+            long sum = 1;
+            for (int i = 1; i <= mL; i++)
             {
-                int l = (int)Math.Floor(Math.Log2(1_000_000)) + 1;
-                int n = 0;
-                string binI = decimalToBinary(i);
-                for (int j = 0; j < 11 - l; j++)
+                int j = i == 1 ? 1 :(int) Math.Pow(2, i - 1) + 1;
+                int upper = (int)Math.Pow(2, i);
+                for (; j < upper; j += 2)
                 {
-                    string temp = binI;
-                    for (int k = 0; k < j; k++)
+                    string s = decimalToBinary(j);
+                    string n = s;
+                    int k = 0;
+                    do
                     {
-                        temp = temp + "00";
-                    }
-                    temp = temp + binI; 
-                } // case 10101 wird nicht beachtet
-                if (l < 10)
-                {
-                    
-                } else
-                {
-                    n = i * (l + 1); // 1001001001, didnt consider cases where 0 are in between, when l < 10
-                }
+                        char[] ch = s.ToCharArray();
+                        Array.Reverse(ch);
+                        n = new string(ch);
+                        for (int l = 0; l < k; l++)
+                        {
+                            n = n + "0";
+                        }
+                        n = n + s;
+                        int number = binaryToDecimal(n);
+                        if (palindromic(number.ToString()))
+                        {
+                            sum += number;
+                        }
+                        if ((n.Length & 1) == 1)
+                        {
+                            StringBuilder sb = new StringBuilder(n);
+                            sb[n.Length / 2] = '1';
+                            n = sb.ToString();
+                            number = binaryToDecimal(n);
+                            if (palindromic(number.ToString()))
+                            {
+                                sum += number;
+                            }
+                        }
+                        k++;
+                    } while (k + 2 * s.Length < 20);
 
-                if (n > 999_999) continue;
-                if (palindromic(n.ToString())) sum += n;
+                }
             }
             Console.WriteLine(sum);
         }

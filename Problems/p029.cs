@@ -33,7 +33,7 @@ namespace Problems
             int dt = 9801;
             for (int i = 2; i < 101; i++)
             {
-                bool f = true;
+                bool first = true;
                 bool equal = true;
                 int exp = 1;
                 for (int j = 0; j < primes.Length; j++)
@@ -46,10 +46,10 @@ namespace Problems
                         div++;
                         n /= primes[j];
                     }
-                    if (f && div != 0)
+                    if (first && div != 0)
                     {
                         exp = div;
-                        f = false;
+                        first = false;
                     }
                     else if (exp != div && div != 0)
                     {
@@ -59,8 +59,16 @@ namespace Problems
                 }
                 if (equal && exp != 1)
                 {
-                    dt -= (int)Math.Floor(100d/(double)exp - 1);
-                    Console.WriteLine(i + "   :    " + exp);
+                    for (int j = 1; j < exp; j++)
+                    {
+                        for (int k = 100 * (j - 1) + 1 + j; k <= j * 100; k++) // I have no fucking clue how I came up with this line of code, but it somehow works, even though it doesnt consider the cases like exp = 5 and k = 330, where j is 4 and checks for divisibility of 4, but 330 is divisble by 5 & 6 therefore we should dt-- which doesnt happen, because we check for divisibility of 5 in the next iteration between 400-500
+                        {
+                            if (k % j == 0 && k % exp == 0)
+                            {
+                                dt--;
+                            }
+                        }
+                    }
                 }
             }
             Console.WriteLine(dt);
