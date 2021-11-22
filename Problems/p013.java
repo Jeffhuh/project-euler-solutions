@@ -9,7 +9,7 @@ public class p013 {
 		byte[][] numbers = new byte[100][52];
 		short[] digitSum = new short[52];
  		try {
-			File f = new File("./files/Problem13.txt");
+			File f = new File("./files/p013.txt");
 			Scanner scan = new Scanner(f);
 			int j = 0;
 			while (scan.hasNext()) {
